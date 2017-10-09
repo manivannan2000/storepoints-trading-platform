@@ -10,6 +10,7 @@ public class GetQuoteAPIController {
 	private static double chgClosePrcn_counter=0.0;
 	
 	private static double bid_counter=632.5;
+	private static double ask_counter=633.5;
 	
 	
 	private static String getGBTC_QuoteResponse(){
@@ -18,7 +19,7 @@ public class GetQuoteAPIController {
 				+"  <all>"
 			      +"<adjNonAdjFlag>false</adjNonAdjFlag>"
 			      +"<annualDividend>0.0</annualDividend>"
-			      +"<ask>631.0</ask>"
+			      +"<ask>"+ask_counter+"</ask>"
 			      +"<askExchange>V</askExchange>"
 			      +"<askSize>1</askSize>"
 			      +"<askTime>08:22:29 EDT 09-18-2017</askTime>"
@@ -26,7 +27,7 @@ public class GetQuoteAPIController {
 			      +"<bidExchange>V</bidExchange>"
 			      +"<bidSize>1</bidSize>"
 			      +"<bidTime>08:22:29 EDT 09-18-2017</bidTime>"
-			      +"<chgClose>0.0049999999999954525</chgClose>"
+			      +"<chgClose>5.0</chgClose>"
 			      +"<chgClosePrcn>"+chgClosePrcn_counter+"</chgClosePrcn>"
 			      +"<companyName>BITCOIN INVT TR</companyName>"
 			      +"<daysToExpiration>0</daysToExpiration>"
@@ -74,11 +75,26 @@ public class GetQuoteAPIController {
     @RequestMapping("/market/rest/quote/GBTC")
     public String accountsList() {
     	
-    	chgClosePrcn_counter=chgClosePrcn_counter+1.0;
+    	// Negative trend
+//    	if(chgClosePrcn_counter<=15.0d)
+//    		chgClosePrcn_counter=chgClosePrcn_counter-1.0d;
+//    	else {
+//    		chgClosePrcn_counter=Math.abs(chgClosePrcn_counter)+1.0d;
+//    	}
+//    	
+//    	if(chgClosePrcn_counter<= -6.0){
+//    		bid_counter= bid_counter-5.0;
+//    		ask_counter= ask_counter-5.0;
+//    	}
     	
-    	if(chgClosePrcn_counter>=6.0){
-    		bid_counter= bid_counter+20.0;
+    	// Positive trend    	
+    	chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+    	
+    	if(chgClosePrcn_counter>= 6.0D){
+    		bid_counter= bid_counter+5.0;
+    		ask_counter= ask_counter+5.0;
     	}
+    	
     	
     	return getGBTC_QuoteResponse();
     }
