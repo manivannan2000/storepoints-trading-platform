@@ -12,6 +12,8 @@ public class GetQuoteAPIController {
 	private static double bid_counter=632.5;
 	private static double ask_counter=633.5;
 	
+	private static int counter=0;
+	
 	
 	private static String getGBTC_QuoteResponse(){
 		return "<QuoteResponse>"
@@ -88,12 +90,29 @@ public class GetQuoteAPIController {
 //    	}
     	
     	// Positive trend    	
-    	chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+//    	chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+//    	
+//    	if(chgClosePrcn_counter>= 6.0D){
+//    		bid_counter= bid_counter+5.0;
+//    		ask_counter= ask_counter+5.0;
+//    	}
     	
-    	if(chgClosePrcn_counter>= 6.0D){
-    		bid_counter= bid_counter+5.0;
-    		ask_counter= ask_counter+5.0;
+    	//Positive and Negative trend both
+    	if(++counter<10)
+    	 chgClosePrcn_counter=chgClosePrcn_counter+1.5D;
+    	else
+    		chgClosePrcn_counter=chgClosePrcn_counter-1.5D;
+    	
+    	if(chgClosePrcn_counter>= 6.0D && chgClosePrcn_counter<=10.0d && counter<10){
+    		bid_counter= bid_counter+5.0D;
+    		ask_counter= ask_counter+5.0D;
+    	} else {
+    		bid_counter= bid_counter-5.0D;
+    		ask_counter= ask_counter-5.0D;
+    		
     	}
+    	
+    	
     	
     	
     	return getGBTC_QuoteResponse();
