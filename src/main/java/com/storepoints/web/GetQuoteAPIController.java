@@ -98,10 +98,14 @@ public class GetQuoteAPIController {
 //    	}
     	
     	//Positive and Negative trend both
-    	if(++counter<10)
-    	 chgClosePrcn_counter=chgClosePrcn_counter+1.5D;
+    	if(++counter<10){
+    		if(counter%2==0)
+    			chgClosePrcn_counter=chgClosePrcn_counter-0.75D;
+    		else
+    			chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+    	}
     	else
-    		chgClosePrcn_counter=chgClosePrcn_counter-1.5D;
+    		chgClosePrcn_counter=chgClosePrcn_counter-1.0D;
     	
     	if(chgClosePrcn_counter>= 6.0D && chgClosePrcn_counter<=10.0d && counter<10){
     		bid_counter= bid_counter+5.0D;
