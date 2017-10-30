@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class GetQuoteAPIController {
 	
 	
-	private static double chgClosePrcn_counter=0.0;
+	private static double chgClosePrcn_counter_BOLD=0.0;
+	
+	private static double chgClosePrcn_counter_GBTC=0.0;
+	
 	
 	private static double bid_counter=632.5;
 	private static double ask_counter=633.5;
@@ -30,7 +33,7 @@ public class GetQuoteAPIController {
 			      +"<bidSize>1</bidSize>"
 			      +"<bidTime>08:22:29 EDT 09-18-2017</bidTime>"
 			      +"<chgClose>5.0</chgClose>"
-			      +"<chgClosePrcn>"+chgClosePrcn_counter+"</chgClosePrcn>"
+			      +"<chgClosePrcn>"+chgClosePrcn_counter_BOLD+"</chgClosePrcn>"
 			      +"<companyName>Audentes Therapeutics Inc</companyName>"
 			      +"<daysToExpiration>0</daysToExpiration>"
 			      +"<dirLast>D</dirLast>"
@@ -89,7 +92,7 @@ public class GetQuoteAPIController {
 			      +"<bidSize>1</bidSize>"
 			      +"<bidTime>08:22:29 EDT 09-18-2017</bidTime>"
 			      +"<chgClose>5.0</chgClose>"
-			      +"<chgClosePrcn>"+chgClosePrcn_counter+"</chgClosePrcn>"
+			      +"<chgClosePrcn>"+chgClosePrcn_counter_GBTC+"</chgClosePrcn>"
 			      +"<companyName>BITCOIN INVT TR</companyName>"
 			      +"<daysToExpiration>0</daysToExpiration>"
 			      +"<dirLast>D</dirLast>"
@@ -149,9 +152,9 @@ public class GetQuoteAPIController {
 //    	}
     	
     	// Positive trend    	
-    	chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+    	chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC+1.0D;
     	
-    	if(chgClosePrcn_counter>= 6.0D){
+    	if(chgClosePrcn_counter_GBTC>= 6.0D){
     		bid_counter= bid_counter+5.0;
     		ask_counter= ask_counter+5.0;
     	}
@@ -191,9 +194,9 @@ public class GetQuoteAPIController {
     	
     	
     	// Positive trend    	
-    	chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
+    	chgClosePrcn_counter_BOLD=chgClosePrcn_counter_BOLD+1.0D;
     	
-    	if(chgClosePrcn_counter>= 6.0D){
+    	if(chgClosePrcn_counter_BOLD>= 6.0D){
     		bid_counter= bid_counter+5.0;
     		ask_counter= ask_counter+5.0;
     	}
