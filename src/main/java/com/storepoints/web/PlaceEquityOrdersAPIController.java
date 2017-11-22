@@ -10,6 +10,9 @@ public class PlaceEquityOrdersAPIController {
 	
 	private static int orderNum_counter=1;
 	
+	private static int counter=1;
+	
+	
 	
 	private static String getGBTC_OrderResponse(){
 		return "<PlaceEquityOrderResponse>"
@@ -43,12 +46,23 @@ public class PlaceEquityOrdersAPIController {
 	}
 	
 	
+	private static String getErrorMessage_1516(){
+		return "<Error><ErrorCode>1516</ErrorCode><ErrorMessage>Your buy order must execute before we can accept your sell order.</ErrorMessage></Error>";
+	}
+	
+	
+	
     @RequestMapping(value = "/order/rest/placeequityorder", method = RequestMethod.POST)
     public String accountsList() {
     	
     	orderNum_counter=(int)Math.random()*1000;
     	
-    	return getGBTC_OrderResponse();
+    	if(counter%2!=0){
+    		counter++;
+    		return getGBTC_OrderResponse();	
+    	} else {
+    		return getErrorMessage_1516();	
+    	}
     }
 
 }
