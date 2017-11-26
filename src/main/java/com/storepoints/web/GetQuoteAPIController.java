@@ -895,36 +895,36 @@ public class GetQuoteAPIController {
 //    	}
     	
     	// Positive trend    	
-    	chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC+1.0D;
-    	
-    	if(chgClosePrcn_counter_GBTC>= 6.0D){
-    		bid_counter= bid_counter+5.0;
-    		ask_counter= ask_counter+5.0;
-    	}
+//    	chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC+1.0D;
+//    	
+//    	if(chgClosePrcn_counter_GBTC>= 6.0D){
+//    		bid_counter= bid_counter+5.0;
+//    		ask_counter= ask_counter+5.0;
+//    	}
     	
     	//Positive and Negative trend both
-//    	if(++counter<10){
-//    		if(counter%2==0)
-//    			chgClosePrcn_counter=chgClosePrcn_counter-2.75D;
-//    		else
-//    			chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
-//    	}
-//    	else{
-//    		if(counter%2==0)
-//    			chgClosePrcn_counter=chgClosePrcn_counter+1.0D;
-//    		else
-//    			chgClosePrcn_counter=chgClosePrcn_counter-2.75D;
-//    	}
-//    	
-//    	if(chgClosePrcn_counter>= 6.0D && chgClosePrcn_counter<=10.0d && counter<10){
-//    		bid_counter= bid_counter+5.0D;
-//    		ask_counter= ask_counter+5.0D;
-//    	} else {
-//    		bid_counter= bid_counter-5.0D;
-//    		ask_counter= ask_counter-5.0D;
-//    		
-//    	}
-//    	
+    	if(++counter<10){
+    		if(counter%2==0)
+    			chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC-2.75D;
+    		else
+    			chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC+1.0D;
+    	}
+    	else{
+    		if(counter%2==0)
+    			chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC+1.0D;
+    		else
+    			chgClosePrcn_counter_GBTC=chgClosePrcn_counter_GBTC-2.75D;
+    	}
+    	
+    	if(chgClosePrcn_counter_GBTC>= 6.0D && chgClosePrcn_counter_GBTC<=10.0d && counter<30){
+    		bid_counter= bid_counter+5.0D;
+    		ask_counter= ask_counter+5.0D;
+    	} else {
+    		bid_counter= bid_counter-5.0D;
+    		ask_counter= ask_counter-5.0D;
+    		
+    	}
+    	
     	
     	
     	

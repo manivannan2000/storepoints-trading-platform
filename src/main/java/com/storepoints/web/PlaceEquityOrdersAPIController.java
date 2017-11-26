@@ -57,12 +57,12 @@ public class PlaceEquityOrdersAPIController {
     	
     	orderNum_counter=(int)Math.random()*1000;
     	
-    	if(counter%2!=0){
-    		counter++;
+//    	if(counter%2!=0){
+//    		counter++;
     		return getGBTC_OrderResponse();	
-    	} else {
-    		return getErrorMessage_1516();	
-    	}
+//    	} else {
+//    		return getErrorMessage_1516();	
+//    	}
     }
 
 }
