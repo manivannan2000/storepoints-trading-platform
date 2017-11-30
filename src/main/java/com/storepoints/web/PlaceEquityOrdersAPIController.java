@@ -50,6 +50,9 @@ public class PlaceEquityOrdersAPIController {
 		return "<Error><ErrorCode>1516</ErrorCode><ErrorMessage>Your buy order must execute before we can accept your sell order.</ErrorMessage></Error>";
 	}
 	
+	private static String getErrorMessage_6510(){
+		return "<Error><ErrorCode>6510</ErrorCode><ErrorMessage>Your sell short is Hard to Borrow and cannot be processed through this platform. Please call Customer Service at 1-800-387-2331 or log on to etrade.com for more information.</ErrorMessage></Error>";
+	}
 	
 	
     @RequestMapping(value = "/order/rest/placeequityorder", method = RequestMethod.POST)
@@ -59,10 +62,12 @@ public class PlaceEquityOrdersAPIController {
     	
 //    	if(counter%2!=0){
 //    		counter++;
-    		return getGBTC_OrderResponse();	
+//    		return getGBTC_OrderResponse();	
 //    	} else {
 //    		return getErrorMessage_1516();	
 //    	}
+    	
+    	return getErrorMessage_6510();
     }
 
 }
