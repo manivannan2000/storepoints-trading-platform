@@ -1,13 +1,31 @@
 package com.storepoints.web;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.DecoderException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+
+import com.storepoints.etws.oauth.common.SignatureMethod;
+import com.storepoints.etws.oauth.OAuthValidator;
+import com.storepoints.etws.oauth.common.DuplicateOauthException;
+import com.storepoints.etws.oauth.common.OAuthCodec;
+import com.storepoints.etws.oauth.common.OAuthParameter;
+
+
+
 @RestController
-public class GetQuoteAPIController {
+public class MarketAPIController {
 	
 	
 	private static double chgClosePrcn_counter_BOLD=0.0;
@@ -22,8 +40,19 @@ public class GetQuoteAPIController {
 	
 	private static Map<Integer, Double> prcnMapMNTA= new HashMap<Integer, Double>();
 	
+	private final OAuthValidator validator = OAuthValidator.getInstance();
+	
+	/**
+	 * To hold filter properties.
+	 */
+	private static final Properties properties = new Properties();
+	
+	
+	
 	
 	static {
+		
+		properties.setProperty("oauth_signature_methods","HMAC-SHA1,RSA-SHA1" );
 		
 		prcnMapMNTA.put(1, -4.96);
 		
@@ -958,7 +987,189 @@ public class GetQuoteAPIController {
     	chgClosePrcn_counter_MNTA=prcnMapMNTA.get(counter_MNTA);
     	
     	return getMNTA_QuoteResponse();
-    }    
+    }
+    
+    @RequestMapping("/market/rest/optionchains")
+    public String getOptionChains(HttpServletRequest request, HttpServletResponse response) {
+    	
+		Map<OAuthParameter, String> oauthParameterMap = null;
+		
+		
+		
+		
+		
+		// if HTTP GET, get the parameters from the query string
+		if (oauthParameterMap.size() == 0
+				&& request.getMethod().equalsIgnoreCase("get")) {
+			System.out.println("Looking into the GET QSTR for OAuth Credentials, since nothing in the POST body "
+							+ request.getParameterMap());
+			try {
+				oauthParameterMap.putAll(parseOAuthParametersFromRequestMap(request
+								.getParameterMap()));
+			} catch (DuplicateOauthException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		String[] supportedSignatureMethods = StringUtils
+				.split((String) properties
+						.get("oauth_signature_methods"), ',');
+		SignatureMethod method = validator.validateSignatureMethod(
+				oauthParameterMap
+						.get(OAuthParameter.oauth_signature_method),
+				supportedSignatureMethods);
+		
+		
+		
+		
+		String oauthSignature = oauthParameterMap
+				.get(OAuthParameter.oauth_signature);
+		
+		System.out.println("The consumer sent signature "
+				+ oauthSignature);
+
+//		boolean isSignatureValid = validator.validateSignature(
+//			method, oauthSignature, consumer.getSecret(), null,
+//			request);
+		boolean isSignatureValid = validator.validateSignature(
+		method, oauthSignature, "382a2974b70d463be481275719dcd511", null,
+		request);
+		
+		
+				
+
+		System.out.println("Did the signatures match? "
+						+ isSignatureValid);
+    	
+    	
+    	return "<OptionChainResponse>"
+    	   +"<optionPairCount>2</optionPairCount>"
+    	   +                   "<optionPairs>"
+    	   +"  <call>"
+    	   +"   <rootSymbol>GOOG</rootSymbol>"
+    	    +"   <expireDate>"
+    	    +"     <day>7</day>"
+    	    +"     <month>1</month>"
+    	    +"     <year>2011</year>"
+    	    +"     <expiryType>MONTHLY</expiryType>"
+    	    +"   </expireDate>"
+    	    +"   <product>"
+    	    +"     <exchangeCode>CINC</exchangeCode>"
+    	    +"    <symbol>GOOG Jan 07 '11 $540 Call w</symbol>"
+    	    +"     <typeCode>OPTN</typeCode>"
+    	    +"   </product>"
+    	    +"   <strikePrice>540.000000</strikePrice>"
+    	    +" </call>"
+    	    +" <callCount>1</callCount>"
+    	    +" <pairType>CALLPUT</pairType>"
+    	    +" <put>"
+    	    +"   <rootSymbol>GOOG</rootSymbol>"
+    	    +"  <expireDate>"
+    	    +"     <day>7</day>"
+    	    +"     <month>1</month>"
+    	    +"    <year>2011</year>"
+    	    +"     <expiryType>MONTHLY</expiryType>"
+    	    +"   </expireDate>"
+    	    +"   <product>"
+    	    +"     <exchangeCode>CINC</exchangeCode>"
+    	    +"     <symbol>GOOG Jan 07 '11 $540 Put w</symbol>"
+    	    +"     <typeCode>OPTN</typeCode>"
+    	    +"   </product>"
+    	    +"   <strikePrice>540.000000</strikePrice>"
+    	    +" </put>"
+    	    +" <putCount>1</putCount>"
+    	   +"</optionPairs>"
+    	   +"<optionPairs>"
+    	    +" <call>"
+    	     +"  <rootSymbol>GOOG</rootSymbol>"
+    	     +"  <expireDate>"
+    	     +"    <day>7</day>"
+    	     +"    <month>1</month>"
+    	     +"    <year>2011</year>"
+    	     +"    <expiryType>MONTHLY</expiryType>"
+    	     +"  </expireDate>"
+    	     +"  <product>"
+    	     +"    <exchangeCode>CINC</exchangeCode>"
+    	     +"    <symbol>GOOG Jan 07 '11 $660 Call w</symbol>"
+    	     +"    <typeCode>OPTN</typeCode>"
+    	      +" </product>"
+    	      +" <strikePrice>660.000000</strikePrice>"
+    	     +"</call>"
+    	     +"<callCount>1</callCount>"
+    	     +"<pairType>CALLPUT</pairType>"
+    	     +"<put>"
+    	      +" <rootSymbol>GOOG</rootSymbol>"
+    	      +" <expireDate>"
+    	      +"   <day>7</day>"
+    	      +"   <month>1</month>"
+    	      +"   <year>2011</year>"
+    	      +"   <expiryType>MONTHLY</expiryType>"
+    	      +" </expireDate>"
+    	      +" <product>"
+    	      +"   <exchangeCode>CINC</exchangeCode>"
+    	      +"   <symbol>GOOG Jan 07 '11 $660 Put w</symbol>"
+    	      +"   <typeCode>OPTN</typeCode>"
+    	      +" </product>"
+    	      +" <strikePrice>660.000000</strikePrice>"
+    	       +" </put>"
+    	     +" <putCount>1</putCount>"
+    	     +"</optionPairs>"
+    	   +"  <symbol>goog</symbol>"
+    	 +"</OptionChainResponse>";    			
+    	
+    }
+    
+    
+	/**
+	 * This method accepts a map, more like a HTTPRequest Parameter Map and returns the OAuth fields from it.
+	 * @param parameterMap
+	 * @return
+	 * @throws DuplicateOauthException if any oauth-parameters are found as duplicates
+	 *
+	 */
+	public static Map<OAuthParameter,String> parseOAuthParametersFromRequestMap(Map<String,String[]> parameterMap) throws DuplicateOauthException{
+		Map<OAuthParameter,String> oauthMap = new HashMap<OAuthParameter,String>();
+		System.out.println("Parsing OAuth Parameters from request map " + parameterMap);
+		if(parameterMap==null || parameterMap.isEmpty()) return oauthMap;
+		for(String name:parameterMap.keySet()){
+			/*if(name.equalsIgnoreCase("consumerkey")) {
+				//Hack for notification...
+				name = OAuthParameter.oauth_consumer_key.toString();
+			}*/
+			System.out.println("Request Param " + name + " value " + parameterMap.get(name)[0]);
+			String[] values = parameterMap.get(name);
+			if(OAuthParameter.isOAuthParameter(name)){
+				if(values.length>1) throw new DuplicateOauthException(name);
+				else
+					try {
+						String value = values[0];
+						if(value.indexOf("%") > 0) {
+							//Which means decode the paramaters
+							System.out.println("Inside Decode");
+							oauthMap.put(OAuthParameter.valueOf(OAuthCodec.oauthDecode(name)), OAuthCodec.oauthDecode(values[0]));
+						} else { 
+							//do not decode as its already decoded in the incoming request
+							System.out.println("No Decoding");
+							oauthMap.put(OAuthParameter.valueOf(name), values[0]);
+						}
+					} catch (DecoderException e) {
+						//nothing we can do about it, ignore the key/value
+						System.out.println(e.getMessage());
+					}
+			}
+		}
+		
+		return Collections.unmodifiableMap(oauthMap);
+	}	    
+	
+
+	
+    
+        
     
 
 }
