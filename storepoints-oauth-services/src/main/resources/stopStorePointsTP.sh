@@ -1,0 +1,1 @@
+ps -ef | grep java | grep storepoints |  sudo awk '{system ("sudo kill "$2)}'

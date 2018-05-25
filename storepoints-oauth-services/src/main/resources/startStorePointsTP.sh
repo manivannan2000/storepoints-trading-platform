@@ -1,0 +1,1 @@
+nohup java -Xms1024m -Xmx3072m -Xss8m -jar  ../storepoints-oauth-services-1.0-SNAPSHOT-jar-with-dependencies.jar input.csv verifier.txt &
